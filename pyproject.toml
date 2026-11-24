@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "galpost"
+version = "0.1.0"
+description = "Post-processing of OpenGadget/MUPPI galaxy simulations (replaces ExtractGalaxies)"
+requires-python = ">=3.9"
+license = {text = "GPL-3.0-or-later"}
+authors = [
+    {name = "Giuseppe Murante", email = "giuseppe.murante@inaf.it"},
+    {name = "Pierluigi Monaco", email = "pierluigi.monaco@inaf.it"},
+]
+readme = "README.md"
+keywords = ["astrophysics", "cosmological simulations", "galaxies", "GADGET", "OpenGadget", "MUPPI"]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = ["numpy>=1.20", "scipy>=1.7", "matplotlib>=3.4"]
+
+[project.urls]
+Homepage = "https://github.com/gmurante/galpost"
+Documentation = "https://github.com/gmurante/galpost/tree/main/docs"
+Issues = "https://github.com/gmurante/galpost/issues"
+
+[project.scripts]
+galpost = "galpost.cli:main"
+galpost-plot = "galpost.plotting:main"
+galpost-gui = "galpost.gui:main"
+galpost-track = "galpost.track:main"
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

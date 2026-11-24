@@ -1,0 +1,14 @@
+# Portable environment: works with micromamba / mamba / conda on Linux, WSL2, macOS
+#   micromamba create -f environment.yml
+#   micromamba activate galpost
+#   pip install -e .            (from this directory)
+name: galpost
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy
+  - scipy
+  - matplotlib
+  - pytest
+  - pip

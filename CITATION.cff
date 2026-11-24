@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use galpost in your research, please cite it as below."
+title: "galpost: galaxy post-processing for OpenGadget/MUPPI simulations"
+type: software
+version: 0.1.0
+license: GPL-3.0-or-later
+repository-code: "https://github.com/gmurante/galpost"
+authors:
+  - family-names: Murante
+    given-names: Giuseppe
+    affiliation: "INAF - Osservatorio Astrofisico di Torino"
+    email: giuseppe.murante@inaf.it
+  - family-names: Monaco
+    given-names: Pierluigi
+    affiliation: "Università degli Studi di Trieste"
+    email: pierluigi.monaco@inaf.it
+keywords:
+  - astrophysics
+  - cosmological simulations
+  - galaxy formation
+  - GADGET
+  - OpenGadget
+  - MUPPI

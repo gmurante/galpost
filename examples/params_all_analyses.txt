@@ -1,0 +1,123 @@
+# =============================================================================
+# galpost example parameter file: SubFind selection, every analysis switched on
+#
+#   galpost params_all_analyses.txt -snap ../snap_134
+#
+# Run it from a working directory next to the simulation (e.g. PostProcessing/);
+# adapt the paths marked with  <-- .  Lines starting with # are comments.
+# Full list of tags: docs/parameters.md
+# =============================================================================
+
+# ---- files -------------------------------------------------------------------
+Snapshot            snap_134             # overridden by -snap on the command line
+GadgetParamfile     ../paramfile.par     # <-- parameter file of the simulation (units)
+MetalsFile          ../metals.dat        # <-- list of chemical elements
+GroupDir            ../SubFindPP         # <-- directory containing groups_NNN
+Outdir              galpost-all          # output directory (created if needed)
+Verbose
+
+# ---- units, centre, frame ----------------------------------------------------
+Htrue                                    # physical units with the h of the snapshot
+CmType              -1                   # cold gas + stars define centre and frame
+AlignWithAngularMomentum                 # z axis along the angular momentum
+RotateGalaxyFrame   0
+Pressure            20000                # MUPPI pressure-law normalisation (molecular gas)
+Cut                 0                    # no vertical cut of the profile volume
+
+# ---- galaxy selection: SubFind ------------------------------------------------
+# Uses groups_NNN/sub_NNN.* and, for the contamination, groups_NNN/group_tab_NNN.*
+ReadSubFindGals
+SubMinStellarMass   -3                   # the 3 subhaloes most massive in stars
+SubRmin             0.5                  # profiles from 0.5 kpc ...
+SubRmax             0                    # ... to R200c of the parent group
+SubRalign           8.0                  # centre and frame from particles within 8 kpc
+SubRlog                                  # logarithmic radial bins
+SubUsePartAssignment                     # only particles bound to the subhalo
+MaxLowResFraction   0.01                 # discard galaxies with >1% low-res mass within rvir
+LowResTypes         2,3
+
+# ---- alternative: FoF selection (comment the SubFind block above) ------------
+#ReadFofHalos
+#FofMinMass          -1                  # the most massive FoF group
+#FofRmin             0.5
+#FofRmax             rvir
+#FofRgal             0                   # rgal = rvir/10
+#FofRalign           8.0
+#FofRlog
+
+# ---- standard (ExtractGalaxies) analysis -------------------------------------
+AnalyzeGalaxies                          # info, jhist, sfr, rotation_matrix
+DecompositionMethod 0                    # -1, 0, 1 (Scannapieco), 2 (Murante)
+WriteTables                              # table-*.gal<ID>: one line per snapshot
+ToFindGalaxy                             # table-to_find_gals.gal<ID>
+
+# ---- profiles -----------------------------------------------------------------
+# One geometry per run. For spherical (cumulative) profiles replace
+# SurfaceDensity with VolumeDensity and use e.g. "MASS NULL 1 DENS CUMU".
+SurfaceDensity
+NumberOfBins        60
+
+Quantities
+# Quantity Weight Type DENS/AVE DIFF/CUMU
+MASS  NULL  4  DENS DIFF                 # stellar surface density
+MASS  NULL  0  DENS DIFF                 # gas surface density
+MCLD  NULL  0  DENS DIFF                 # cold gas
+MHOT  NULL  0  DENS DIFF                 # hot gas
+MMOL  NULL  0  DENS DIFF                 # molecular gas
+SFR   NULL  0  DENS DIFF                 # SFR surface density (Msun/yr/kpc^2)
+TEMP  MCLD  0  AVE  DIFF                 # temperature, cold-mass weighted
+PRES  MCLD  0  AVE  DIFF                 # pressure
+VTp   MASS  4  AVE  DIFF                 # stellar rotation velocity
+VTp   MCLD  0  AVE  DIFF                 # cold gas rotation velocity
+SVZ   MASS  4  AVE  DIFF                 # stellar sigma_z^2
+SVZ   MCLD  0  AVE  DIFF                 # cold gas sigma_z^2
+ZMet  MASS  0  AVE  DIFF                 # gas metallicity
+ZMet  MASS  4  AVE  DIFF                 # stellar metallicity
+ZO    MASS  0  AVE  DIFF                 # gas oxygen mass fraction
+ZFe   MASS  4  AVE  DIFF                 # stellar iron mass fraction
+AGE   MASS  4  AVE  DIFF                 # stellar formation time (scale factor)
+End
+
+# ---- galaxy snapshot -----------------------------------------------------------
+WriteGalaxySnapshot                      # zoom.*: all blocks of the snapshot
+GalaxySnapshotRadius  rgal
+AlignGalaxySnapshot
+GalaxySnapshotInCodeUnits
+
+# ---- particle catalogues (large ASCII files: uncomment if needed) ------------
+#WriteGalaxyCatalog
+#WriteParticleList
+
+# ---- galpost extra analyses ----------------------------------------------------
+ExtraBins           30                   # radial bins of the extra profiles
+ExtraRmax           rgal                 # outer radius
+ExtraZmax           5.0                  # |z| < 5 kpc for disc-plane analyses
+
+KinematicDecomposition                   # eps = jz/jcirc(E): kindec, jhistE
+DiscCircularity     0.7
+KappaRot                                 # kappa_rot, kappa_co
+KappaRotRadius      30.0
+StellarPopulations                       # stellarpop, mdf, ofe_feh
+DiscStructure                            # disc
+DiscFitRmin         auto
+DiscFitRmax         auto
+KinematicProfiles                        # kinematics
+ToomreQ                                  # toomre
+BarStrength                              # bar
+SphericalFlows                           # flows
+FlowRadii           0.1,0.25,0.5,1.0
+FlowShellWidth      0.1
+KSRelation                               # ks
+MetallicityGradients                     # gradients
+GradientRmin        auto
+GradientRmax        auto
+DustAnalysis                             # dust (needs DSTL/DSTS blocks)
+HotHaloAnalysis                          # cgm
+CGMRmin             0.15
+CentralBH                                # bh
+ScalingRelations                         # scaling, table-scaling
+Satellites                               # satellites
+Maps                                     # map_*.png / .npy
+MapSize             rgal
+MapPixels           256
+MapComponents       stars,cold,hot,gas

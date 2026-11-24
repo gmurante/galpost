@@ -1,0 +1,24 @@
+site_name: galpost
+site_description: Galaxy post-processing for OpenGadget/MUPPI simulations
+docs_dir: docs
+theme:
+  name: readthedocs
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Quick start: quickstart.md
+  - The parameter file: parameter_file.md
+  - Parameter reference: parameters.md
+  - Output files: outputs.md
+  - Extra analyses: extra_analyses.md
+  - Halo finding with OpenGadget: subfind_opengadget.md
+  - Snapshot reader: snapshot_reader.md
+  - Progenitor tracking: tracking.md
+  - Graphical interface: gui.md
+  - Python API: python_api.md
+  - Compatibility with ExtractGalaxies: compatibility.md
+  - Performance: performance.md
+markdown_extensions:
+  - tables
+  - toc:
+      permalink: true
